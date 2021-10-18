@@ -5,10 +5,6 @@ import os
 import threading
 
 try:
-   from fake_useragent import UserAgent
-except ImportError as err:
-   return_error(err)
-try:
    import requests
 except Exception as err:
    return_error(err)
