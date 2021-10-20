@@ -28,8 +28,6 @@ parser.add_argument('--threads', type=int, required=True, default=999, help='Thr
 url = parser.parse_args().target
 threads = parser.parse_args().threads
 
-print (url)
-
 if not url.__contains__("http") and not url.__contains__("https"):
    exit("[ " + RED + '!' + NORMAL + " ] " + RED  + "URL doesnt contains http or https!")
 elif not url.__contains__("."):
